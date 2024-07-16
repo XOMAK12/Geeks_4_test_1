@@ -1,41 +1,48 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import classes from './MainPage.module.css';
-import BookList from "../../bookList/BookList";
-import shape from "./image/Group 10.png"
+import shape from "./image/Group 10.png";
+import Button from "../../components/button/Button";
+import Input from "../../components/input/Input";
+import BookList from "../../components/bookList/BookList";
 
 const MainPage = () => {
     const [books, setBooks] = useState(['Том Сойер', 'Том Сойер', 'Том Сойер', 'Том Сойер']);
     const [newBook, setNewBook] = useState('');
 
     const addBook = () => {
-        if (newBook) {
+        if (newBook.trim()) {
             setBooks([...books, newBook]);
             setNewBook('');
         }
     };
-    const deleteBook = (index) => {
-        setBooks(books.filter((book, i) => i !== index));
-    };
-    return (
-        <>
-            <div className={classes.shape}><img src={shape} alt=""/></div>
-            <div className={classes.wrapper}>
-                <h1 className={classes.h1}>Добавить книгу</h1>
-                <div className={classes.addContainer}>
-                    <div className={classes.addBlock}>
-                        <p>Название</p>
-                        <input
-                            type="text"
-                            placeholder={'Введите название'}
-                            onChange={(event) => setNewBook(event.target.value)}
-                        />
-                    </div>
-                    <button onClick={addBook}>Добавить</button>
-                </div>
-                <BookList books={books} onDelete={deleteBook}/>
-            </div>
-        </>
 
+    const deleteBook = (index) => {
+        setBooks(books.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div className={classes.wrapper}>
+            <img className={classes.shape} src={shape} alt="shape"/>
+            <h1 className={classes.h1}>Добавить книгу</h1>
+            <div className={classes.addContainer}>
+                <div className={classes.addBlock}>
+                    <p>Название</p>
+                    <Input
+                        value={newBook}
+                        onChange={(e) => setNewBook(e.target.value)}
+                        placeholder={'Введите название'}
+                    />
+                </div>
+                <Button
+                    label="Добавить"
+                    action={addBook}
+                />
+            </div>
+            <BookList
+                books={books}
+                onDelete={deleteBook}
+            />
+        </div>
     );
 };
 
